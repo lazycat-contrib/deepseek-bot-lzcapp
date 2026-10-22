@@ -1,0 +1,30 @@
+params:
+  - id: api_key
+    type: secret
+    name: "DeepSeek API Key"
+    description: "API key for the DeepSeek (or another Anthropic-Messages-compatible) model endpoint"
+    default_value: ""
+    optional: true
+
+  - id: base_url
+    type: string
+    name: "Custom endpoint (optional)"
+    description: "Override the model endpoint; leave empty to use the official DeepSeek service"
+    default_value: ""
+    optional: true
+
+locales:
+  zh:
+    api_key:
+      name: "DeepSeek API Key"
+      description: "模型服务的 API Key（DeepSeek 官方，或其他兼容 Anthropic Messages 协议的服务）"
+    base_url:
+      name: "自定义接口地址（可选）"
+      description: "覆盖模型接口地址，留空则使用 DeepSeek 官方服务"
+  en:
+    api_key:
+      name: "DeepSeek API Key"
+      description: "API key for the model endpoint (DeepSeek official, or another Anthropic-Messages-compatible service)"
+    base_url:
+      name: "Custom endpoint (optional)"
+      description: "Override the model endpoint; leave empty to use the official DeepSeek service"

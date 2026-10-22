@@ -1,0 +1,55 @@
+application:
+  subdomain: deepseek-bot
+  public_path:
+    - /
+  upstreams:
+    - location: /
+      backend: http://deepseek-bot:3080/
+
+services:
+  deepseek-bot:
+    # upstream: ghcr.io/fei2411/deepseek-bot:latest (linux/amd64, dsh web + ds-bot plugin)
+    image: ghcr.1ms.run/fei2411/deepseek-bot:latest@sha256:8825cb194ad8b8b6e8dddaf434b4de9d033eb6f205c6392b478fd4d820bbdf5e
+    environment:
+      - TZ=Asia/Shanghai
+      # Model endpoint. An empty api_key falls back to whatever the UI configures.
+      - DEEPSEEK_API_KEY={{ .U.api_key }}
+      - DEEPSEEK_BASE_URL={{ .U.base_url }}
+      # dsh rejects every /api request whose Host is neither loopback nor listed
+      # here (403). Loopback is always trusted; the box domain serves the UI.
+      - DSH_TRUSTED_HOST=${LAZYCAT_SUBDOMAIN}.${LAZYCAT_BOX_DOMAIN}
+      - PUID=1000
+      - PGID=1000
+    binds:
+      # DSH_HOME: team, sessions, profiles, settings and the browser cookie key.
+      - /lzcapp/var/data:/data
+      # Team workspace: where the Bots read and write files.
+      - /lzcapp/var/workspace:/workspace
+    healthcheck:
+      # An unauthenticated GET / answers 401, which still proves the server is up.
+      test:
+        - CMD-SHELL
+        - curl -s -o /dev/null http://127.0.0.1:3080/
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+usage: |
+  DeepSeek Bot 是一支运行在 DeepSeek Harness 上的长期在线 AI 机器人小队：机器人之间可以互发消息，
+  也支持群聊。第一次打开团队时，DS Bot 会自动创建一个名为 Chief 的 Main Bot 领队。
+
+  首次使用需要两步登录（Harness 的安全设计）：
+
+  1. 打开应用的「日志」，找到形如 `dsh web: http://127.0.0.1:3080/?token=…` 的一行，
+     复制其中的 token 参数。
+  2. 访问 `https://<本应用地址>/?token=<你复制的token>` 打开一次即可完成登录，
+     浏览器会写入有效期 30 天的会话 Cookie，之后直接访问应用地址即可。
+
+  查看日志也可以在终端执行：`lzc-cli app log community.lazycat.app.deepseek-bot`
+
+  配置模型：安装时填写的 API Key 供机器人默认使用；也可在「设置 → AI 助手」中改用
+  OpenAI 兼容接口、自定义厂商或本地模型。
+
+  数据：团队、群聊与常用命令记录在应用数据目录；机器人在 /workspace 工作区读写文件。
+  容器即沙箱边界——机器人在挂载进来的文件里拥有完整读写权限，请按需使用。

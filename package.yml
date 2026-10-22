@@ -1,0 +1,20 @@
+package: community.lazycat.app.deepseek-bot
+version: 0.2.0
+name: DeepSeek Bot
+description: "A team of long-lived AI bots with bot-to-bot messages and group chats, served by DeepSeek Harness"
+author: Fei2411
+license: Apache-2.0
+homepage: https://github.com/Fei2411/DeepSeek-Bot
+min_os_version: 1.5.0
+
+permissions:
+  required:
+    - net.internet
+
+locales:
+  zh:
+    name: DeepSeek Bot
+    description: "运行在 DeepSeek Harness 上的一支长期在线 AI 机器人小队：支持机器人之间互发消息与群聊，团队会自动创建 Main Bot 领队。"
+  en:
+    name: DeepSeek Bot
+    description: "A team of long-lived AI bots with bot-to-bot messages and group chats, served by DeepSeek Harness."
