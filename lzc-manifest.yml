@@ -5,11 +5,10 @@ application:
   upstreams:
     - location: /
       backend: http://deepseek-bot:3080/
-
 services:
   deepseek-bot:
-    # upstream: ghcr.io/fei2411/deepseek-bot:latest (linux/amd64, dsh web + ds-bot plugin)
-    image: ghcr.1ms.run/fei2411/deepseek-bot:latest@sha256:8825cb194ad8b8b6e8dddaf434b4de9d033eb6f205c6392b478fd4d820bbdf5e
+    # upstream: ghcr.io/fei2411/deepseek-bot:latest@sha256:d2f5ccfd4b62619c8eeef9dd8722f3c68f6022ef41897b9fe39508dff9c375c1
+    image: ghcr.1ms.run/fei2411/deepseek-bot:latest@sha256:d2f5ccfd4b62619c8eeef9dd8722f3c68f6022ef41897b9fe39508dff9c375c1
     environment:
       - TZ=Asia/Shanghai
       # Model endpoint. An empty api_key falls back to whatever the UI configures.
@@ -34,8 +33,7 @@ services:
       timeout: 5s
       retries: 3
       start_period: 20s
-
-usage: |
+usage: |-
   DeepSeek Bot 是一支运行在 DeepSeek Harness 上的长期在线 AI 机器人小队：机器人之间可以互发消息，
   也支持群聊。第一次打开团队时，DS Bot 会自动创建一个名为 Chief 的 Main Bot 领队。
 
